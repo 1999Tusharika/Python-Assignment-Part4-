@@ -1,0 +1,50 @@
+import matplotlib.pyplot as pyplot
+
+# Bar Chart - Average score per subject
+avg_scores = df[subject_cols].mean()
+plt.bar(subject_cols, avg_scores)
+plt.title("Average Score per Subject")
+plt.xlabel("Subject")
+plt.ylabel("Average Score")
+plt.savefig("plot1_bar.png")
+plt.show()
+
+# Histogram - Math scores
+plt.hist(df['math'], bins=5, color='skyblue', edgecolor='black')
+plt.axvline(df['math'].mean(), color='red', linestyle='dashed', label='Mean')
+plt.title("Distribution of Math Scores")
+plt.xlabel("Math Score")
+plt.ylabel("Frequency")
+plt.legend()
+plt.savefig("plot2_hist.png")
+plt.show()
+
+# Scatter Plot - Study hours vs Avg score
+plt.scatter(df[df['passed']==1]['study_hours_per_day'], df[df['passed']==1]['avg_score])
+plt.scatter(df[df['passed']==0]['study_hours_per_day'], df[df['passed']==0]['avg_score])
+plt.title("Study Hours vs Average Score")
+plt.xlabel("Study Hours per Day")
+plt.ylabel("Average Score")
+plt.legend()
+plt.savefig("plot3_scatter.png")
+plt.show()
+
+# Box Plot - Attendance Pass vs Fail
+pass_attendance = df[df['paased']==1]['attendance_pct'].tolist()
+fail_attendance = df[df['passed']==0]['attendance_pct'].tolist()
+plt.boxplot([pass_attendance, fail_attendance], labels=['Pass','Fail'])
+plt.title("Attendance Distribution by Pass/Fail")
+plt.ylabel("Attendance %")
+plt.savefig("plot4_box.png")
+plt.show()
+
+# Line Plot - Math vs Science scores
+plt.plot(df['name'], df['math'], marker='o', label='Math')
+plt.plot(df['name'], df['science'], marker='s', label='Science')
+plt.xticks(rotation=45)
+plt.title("Math and Science Scores per Student")
+plt.xlabel("Student")
+plt.ylabel("Score")
+plt.legend()
+plt.savefig("plot5_line.png")
+plt.show()

@@ -1,0 +1,26 @@
+import seaborn as sns
+
+fig, (axl, ax2) = plt.subplots(1,2, figsize=(12,5))
+
+sns.barplot(data=df, x='passed', y='math', ax=axl)
+axl.set_title("Average Math Score by Pass/Fail")
+
+sns.barplot(data=df, x='passed', y='science', ax=ax2)
+ax2.set_title("Average Science Score by Pass/Fail")
+
+plt.savefig("plot6_seaborn_bar.png")
+plt.show()
+
+# Scatter with regression lines
+sns.regplot(data=df[df['passed']==1], x='attendance_pct', y='avg-score', scatter=True, label='Pass', color='green')
+sns.regplot(data=df[df['passed']==0], x='attendance_pct', y='avg_score', scatter=True, label='Fail', color='red')
+plt.title("Attendance vs Avg Score with Regression")
+plt.xlabel("Attendance %")
+plt.ylabel("Average Score")
+plt.legend()
+plt.savefig("plot7_seaborn_scatter.png")
+plt.show()
+
+# Comment:
+# Seaborn made it easier to add regression lines and styled plots quickly.
+# Matplotlib gave more control but required more manual setup (titles, labels, legends).

@@ -1,0 +1,27 @@
+import pandas as pd 
+
+# Load dataset
+df = pd.read_csv("students.csv")
+
+# First 5 rows
+print(df.head())
+
+# Shape and dtypes
+print("Shape:", df.shape)
+print("Data types:\n", df.types)
+
+# Summary statistics
+print(df.describe())
+
+# Count of passed vs failed
+print("Pass/Fail counts:\n", df[passed].value_counts())
+
+# Average scores per subject for pass vs fail
+subject_cols = ['math', 'science', 'english', 'history', 'pe']
+print("Average scores (Pass):\n", df[df['passed']==1][subject_cols].mean())
+print("Average scores (Fail):\n", df[df['passed']==0][subject_cols].mean())
+
+# Student with highest overall average
+df['avg_score'] = df[subject_cols].mean(axis=1)
+best_student = df.local[df['avg_scores'].idxmax()]
+print("Best student:", best_student['name'], "with avg score", best_student['avg_score'])

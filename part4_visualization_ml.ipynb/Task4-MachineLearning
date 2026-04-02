@@ -1,0 +1,55 @@
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StrandardScaler
+from sklearn.linear_model import LogisticRegression
+
+# Features and target
+x = df[['math','science','english','history','pe','attendance_pct','study_hours_per_day']]
+y = df['passed']
+
+# Train-test split
+x_train, x_test, y_train, y_test = train_test_split(x,y,test_size=0.2,random_state=42)
+
+# Scale features
+scaler = StrandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
+# Train model
+model = LogisticRegression()
+model.fit(X_train_scaled, y_train)
+print("Training accuracy:", model.score(X_train_scaled, y_train))
+
+# Evaluate
+y_pred = model.predict(X_test_scaled)
+print('Test accuracy:', model.score(X_test_scaled, y_test))
+
+for i, idx in enumerate(X_test.index):
+    name = df.loc[idc, 'name']
+    actual = y_test.iloc[i]
+    pred = y_pred[i]
+    correct = "✅" if actual==pred else "❌"
+    print(f"{name}: Actual={actual}, Predicted={pred} {correct}")
+
+# Feature importance
+coeffs = model.coef_[0]
+features = X.columns
+importance = sorted(zip(features, coeffs), key=lambda x: abs(x[1]), reverse=True)
+print("Feature importance:")
+for feat, coef in importance:
+    print(f"{feat}: {coef: .3f}")
+
+colors = ['green' if c>0 else 'red' for c in coeffs]
+plt.barh(features, coeffs, color=colors)
+plt.title("Features Coefficients (Logistic Regression)")
+plt.xlabel("Coefficient Value")
+plt.ylabel("Feature")
+plt.savefig("plot8_feature_importance.png")
+plt.show()
+
+# Predict new student
+new_student = [[75,70,68,65,80,82,3.2]]
+new_student_scaled = scaler.transform(new_student)
+prediction = model.predict(new_student_scaled)[0]
+prob = model.predict_proba(new_student_scaled)[0]
+print("New student prediction:", "Pass" if prediction==1 else "Fail")
+print("Probabilities:", prob)
